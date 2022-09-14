@@ -47,6 +47,11 @@ WHERE mgr = (
                 WHERE ename = 'KING'
 );
 
+SELECT a.ename, a.sal
+FROM emp a, emp b
+WHERE a.mgr = b.empno
+and b.ename = 'KING';
+
 문제7) 자신의 급여가 평균 급여보다 많고  이름에 'S'가 들어가는 사원과
       ------------------------ ----------
                 (1번째 조건)      (2번째 조건)

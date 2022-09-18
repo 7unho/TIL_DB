@@ -102,3 +102,68 @@ FROM
     city b
 ON a.Code = b.CountryCode
 GROUP BY a.Name;
+
+-- 10. 인구가 가장 많은 도시는 어디인가?
+SELECT CountryCode, Name, max(Population)
+FROM city
+ORDER BY 3 desc
+limit 1;
+
+-- 11. 가장 인구가 적은 도시의 이름, 인구수, 국가를 출력하시오
+SELECT country.Name, city.CountryCode, city.Name, city.Population
+FROM country, city
+WHERE country.Code = city.CountryCode
+ORDER BY 4
+limit 1;
+
+-- 12. KOR의 seoul보다 인구가 많은 도시들을 출력하시오.
+SELECT CountryCode, Name, Population
+FROM city
+WHERE Population > (
+                        SELECT Population
+                        FROM city 
+                        WHERE CountryCode = 'KOR'
+                        and Name = 'Seoul'
+                    );
+
+-- 13. San Miguel 이라는 도시에 사는 사람들이 사용하는 공식 언어는?
+SELECT CountryCode, Language
+FROM countrylanguage
+WHERE CountryCode in (
+                        SELECT CountryCode 
+                        FROM city
+                        WHERE Name = 'San miguel'
+                    )
+and IsOfficial = 'T';
+
+-- 14. 국가 코드와 해당 국가의 최대 인구수를 출력하시오 ( 국가 코드로 정렬 )
+SELECT CountryCode, max(Population)
+FROM city
+GROUP BY CountryCode
+ORDER BY CountryCode;
+
+-- 15. 국가별로 가장 인구가 많은 도시의 정보를 출력하시오 ( 국가 코드로 정렬 )
+SELECT CountryCode, Name, max(Population)
+FROM city
+GROUP BY CountryCode
+ORDER BY CountryCode;
+
+-- 16. 국가 이름과 함께 국가별로 가장 인구가 많은 도시의 정보를 출력하시오
+SELECT city.CountryCode, country.Name, city.Name, max(city.Population)
+FROM city, country
+WHERE city.CountryCode = country.Code
+GROUP BY CountryCode
+ORDER BY CountryCode;
+
+-- 17. 위 쿼리의 내용이 자주 사용된다. summary라는 이름의 view로 생성하시오.
+CREATE VIEW summary AS
+SELECT city.CountryCode '국가코드', country.Name '국가명', city.Name '도시명', max(city.Population) '최저 인구'
+FROM city, country
+WHERE city.CountryCode = country.Code
+GROUP BY CountryCode
+ORDER BY CountryCode;
+
+select * from summary;
+
+-- 18. summary에서 국가코드가 kor인 국가의 대표 도시를 조회하시오
+SELECT * FROM summary WHERE 국가코드 = 'KOR';

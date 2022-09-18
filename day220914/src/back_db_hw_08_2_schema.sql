@@ -59,3 +59,18 @@ WHERE name in (
                 FROM board 
                 WHERE year(createtime) = 2019
 );
+
+-- 9. age가 30~60인 사람들이 작성한 board의 title을 출력하시오
+SELECT title
+FROM board
+WHERE writername in (
+                        SELECT name
+                        FROM user
+                        WHERE age BETWEEN 30 and 60
+);
+
+-- 10. age가 60보다 큰 사람이 board를 작성한 적이 있다면 그 사람의 이름을 출력하시오
+SELECT DISTINCT user.name
+FROM user, board
+WHERE user.name = board.writername
+and user.age > 60;

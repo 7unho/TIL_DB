@@ -1,5 +1,5 @@
 -- Active: 1663060283928@@127.0.0.1@3306@ssafy_user
-show tables;
+--show tables;
 
 -- 1. user 테이블에 전채 몇개의 행이 있는지 조회하시오.
 SELECT count(*) '사용자 수'
